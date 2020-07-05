@@ -30,13 +30,10 @@ try:
     if os.path.isfile(db_path):
         shutil.move(db_path,new_db_path)
 
-        
 except:
     pass
 
 db=sqlite3.connect(new_db_path)
-
-
 
 my_addon = xbmcaddon.Addon()
 enable_playlists = my_addon.getSetting('enable_playlists')
@@ -102,13 +99,7 @@ def import_from_old_addon():
         pDialog.close()
         
         xbmcgui.Dialog().ok("Youtube Channels", "%s channels imported."%numb)
-               
-              
         fh.close()
-
-
-
-
 
 
 
@@ -155,16 +146,11 @@ def open_category(site):
 
 
 def delete_database():
-    
     with db:
-    
         cur = db.cursor()
-         
-    
         cur.execute("drop table if exists Folders")
         cur.execute("drop table if exists Channels")
         cur.close()
-
 
     return
 
@@ -177,9 +163,7 @@ def read_url(url):
         return link.decode('utf-8')
 
 def init_database():
-    
     with db:
-    
         cur = db.cursor()    
         cur.execute("begin") 
         cur.execute("create table if not exists Folders (Name TEXT, Channel TEXT)")
@@ -187,12 +171,13 @@ def init_database():
         db.commit()
         cur.close()
     return
+
 def get_folders():
     init_database()
     #db=sqlite3.connect('folders.db')
 
     cur = db.cursor()
-    cur.execute("begin")     
+    cur.execute("begin")
     cur.execute("SELECT Name FROM Folders")
     
     rows = cur.fetchall()
@@ -201,30 +186,22 @@ def get_folders():
     for i in range (len(rows)):
         folder=rows[i]
         folders+=folder
-    
 
-    
     return folders
 
 def add_folder(foldername):
     init_database()
 
-    #db=sqlite3.connect('folders.db')
-
-    cur = db.cursor()  
-    cur.execute("begin")   
+    cur = db.cursor()
+    cur.execute("begin")
     cur.execute('INSERT INTO Folders(Name) VALUES ("%s");'%foldername)
     db.commit()
     cur.close()
     
 
 def remove_folder(name):
-    #DELETE FROM COMPANY WHERE ID = 7
-
-    
-
-    cur = db.cursor()  
-    cur.execute("begin")  
+    cur = db.cursor()
+    cur.execute("begin")
     cur.execute("DELETE FROM Folders WHERE Name = ?;",(name,))
     cur.execute("DELETE FROM Channels WHERE Folder = ?;",(name,))
 
@@ -233,10 +210,8 @@ def remove_folder(name):
 
 
 def get_channels(foldername):
-    
-
-    cur = db.cursor()    
-    cur.execute("begin")  
+    cur = db.cursor()
+    cur.execute("begin")
 
     cur.execute("SELECT Channel,Channel_ID,thumb FROM Channels WHERE Folder=?",(foldername,))
 
@@ -257,7 +232,6 @@ def get_channel_id_from_uploads_id(uploads_id):
     channel_id=decoded_data['items'][0]['snippet']['channelId']
 
     return channel_id
-    
 
 
 
@@ -268,16 +242,14 @@ def add_channel(foldername,channel_name,channel_id,thumb):
         cur.execute("DELETE FROM Channels WHERE Folder = ? AND Channel = ? AND Channel_ID = ? AND thumb = ?",(foldername,channel_name,channel_id,thumb))
     except:
         pass
-  
-     
+ 
     cur.execute("INSERT INTO Channels(Folder,Channel,Channel_ID,thumb) VALUES (?,?,?,?);",(foldername,channel_name,channel_id,thumb))
     db.commit()
     cur.close()
 
 def remove_channel(id):
-    
-    cur = db.cursor()    
-    cur.execute("begin")   
+    cur = db.cursor()
+    cur.execute("begin")
 
     cur.execute("DELETE FROM Channels WHERE Channel_ID = ?;",(id,))
 
@@ -376,7 +348,7 @@ def get_latest_from_channel(channel_id, page):
         listout.append([title,video_id,thumb,desc])
     return listout
 
-               
+
 def get_chart_50():
     my_addon = xbmcaddon.Addon()
     num = int(my_addon.getSetting('result_number_channels_cat'))
@@ -397,7 +369,6 @@ def get_chart_50():
     for i in range(len(channels)):
         channel=search_channel_by_username(channels[i])
         if channel!='not found':
-         
             url = build_url({'mode': 'open_channel', 'foldername': '%s'%str(channel[1]), 'page':'1'})
             li = xbmcgui.ListItem('%s'%channel[0], iconImage='%s'%channel[2])
 
@@ -435,18 +406,6 @@ def get_playlists(channelID,page):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 base_url = sys.argv[0]
 addon_handle = int(sys.argv[1])
 args = urlparse.parse_qs(sys.argv[2][1:])
@@ -480,8 +439,6 @@ if mode is None:
                                     ('Add folder', 'RunPlugin(%s)'%add_uri),
                                     ('Add channel to root', 'RunPlugin(%s)'%addch_uri)])
 
-            
-            
 
 
             xbmcplugin.addDirectoryItem(handle=addon_handle, url=url,
@@ -543,7 +500,6 @@ if mode is None:
         
         xbmcplugin.addDirectoryItem(handle=addon_handle, url=url,
                                     listitem=li,isFolder=True)
-                              
 
     xbmcplugin.endOfDirectory(addon_handle)
 
@@ -579,7 +535,6 @@ elif mode[0]=='open_folder':
                                 listitem=li,isFolder=True)
         url = build_url({'mode': 'add_channel', 'foldername': '%s'%foldername})
         li = xbmcgui.ListItem('[COLOR green]Add channel to [/COLOR][COLOR blue] root[/COLOR]', iconImage='https://raw.githubusercontent.com/natko1412/repo.natko1412/master/img/plus.png')
-        
 
 
 
@@ -610,7 +565,7 @@ elif mode[0]=='open_channel':
     except:
         playlista=False
 
-    
+
     if not playlista and enable_playlists=='true':
 
         url = build_url({'mode': 'open_playlists', 'id':'%s'%id, 'page':'1'})
@@ -668,22 +623,10 @@ elif mode[0]=='open_playlists':
 
 
     if next_page!='1':
-        
         uri = build_url({'mode': 'open_playlists', 'id': '%s'%id, 'page' : '%s'%next_page ,'playlist':'yes'})
-      
-
         li = xbmcgui.ListItem('Next Page >>', iconImage=thumb)
         xbmcplugin.addDirectoryItem(handle=addon_handle, url=uri, listitem=li,isFolder=True)
     xbmcplugin.endOfDirectory(addon_handle)
-    
-
-
-
-
-
-
-
-
 
 
 
@@ -700,9 +643,6 @@ elif mode[0]=='add_channel':
         
         if keyboard.isConfirmed():
             channel_name = keyboard.getText()
-        
-
-
             results=search_channel(channel_name)
             
             result_list=[]
@@ -752,10 +692,8 @@ elif mode[0]=='rem_folder':
     xbmc.executebuiltin("Container.Refresh")
 
 elif mode[0]=='erase_all':
-    ret = xbmcgui.Dialog().yesno('Erase database', 'Do you wish to erase your Youtube Channels database?' ) 
-    
-    if ret:       
-
+    ret = xbmcgui.Dialog().yesno('Erase database', 'Do you wish to erase your Youtube Channels database?' )
+    if ret:
         delete_database()
         xbmcgui.Dialog().ok("Youtube Channels", "Successfully erased folder database!")
 
