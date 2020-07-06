@@ -15,5 +15,8 @@
 		<license>GPL-3.0-or-later</license>
 		<website>https://github.com/mintsoft/kodi.plugin.ytchannels</website>
 		<source>https://github.com/mintsoft/kodi.plugin.ytchannels</source>
+		<assets>
+			<icon>icon.png</icon>
+		</assets>
 	</extension>
 </addon>
