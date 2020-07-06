@@ -14,24 +14,10 @@ import json
 import sqlite3
 
 
-db_dir = xbmc.translatePath("special://database")
-db_path = os.path.join(db_dir, 'folders.db')
-
 addonID=xbmcaddon.Addon().getAddonInfo("id")
 
-db_dir = xbmc.translatePath("special://profile/addon_data/"+addonID)
-new_db_path = os.path.join(db_dir, 'youtube_channels.db')
-
-try:
-    import shutil
-    if os.path.isfile('folders.db'):
-        shutil.copyfile('folders.db', db_path)
-        os.remove('folders.db')
-    if os.path.isfile(db_path):
-        shutil.move(db_path,new_db_path)
-
-except:
-    pass
+addon_db_dir = xbmc.translatePath("special://profile/addon_data/"+addonID)
+db_path = os.path.join(addon_db_dir, 'youtube_channels.db')
 
 db=sqlite3.connect(new_db_path)
 
