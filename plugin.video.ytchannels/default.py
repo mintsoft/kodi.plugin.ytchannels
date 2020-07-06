@@ -123,9 +123,6 @@ def open_category(site):
 
             xbmcplugin.addDirectoryItem(handle=addon_handle, url=url,
                                     listitem=li,isFolder=True)
-        else:
-            pass
-
 
     xbmcplugin.endOfDirectory(addon_handle)
 
