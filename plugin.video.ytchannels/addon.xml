@@ -9,9 +9,10 @@
 		<provides>video</provides>
 	</extension>
 	<extension point="xbmc.addon.metadata">
-		<summary lang="en">Watch your favourite youtube channels</summary>
-		<description lang="en">Watch your favourite youtube channels and organize them in folders.</description>
+		<summary lang="en_gb">Watch your favourite youtube channels</summary>
+		<description lang="en_gb">Watch your favourite youtube channels and organize them in folders.</description>
 		<platform>all</platform>
+		<license>GPL-3.0-or-later</license>
 		<website>https://github.com/mintsoft/kodi.plugin.ytchannels</website>
 		<source>https://github.com/mintsoft/kodi.plugin.ytchannels</source>
 	</extension>
