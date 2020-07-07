@@ -62,12 +62,11 @@ def init_database():
 	
 def get_folders():
 	init_database()
-	#db=sqlite3.connect('folders.db')
 
 	cur = db.cursor()
 	cur.execute("begin")     
 	cur.execute("SELECT Name FROM Folders")
-	
+
 	rows = cur.fetchall()
 	db.commit()
 	cur.close()
@@ -81,8 +80,6 @@ def get_folders():
 def add_folder(foldername):
 	init_database()
 
-	#db=sqlite3.connect('folders.db')
-
 	cur = db.cursor()  
 	cur.execute("begin")   
 	cur.execute('INSERT INTO Folders(Name) VALUES ("%s");'%foldername)
@@ -91,10 +88,6 @@ def add_folder(foldername):
 	
 
 def remove_folder(name):
-	#DELETE FROM COMPANY WHERE ID = 7
-
-	
-
 	cur = db.cursor()  
 	cur.execute("begin")  
 	cur.execute("DELETE FROM Folders WHERE Name = ?;",(name,))
@@ -137,16 +130,15 @@ def add_channel(foldername,channel_name,channel_id,thumb):
 		cur.execute("DELETE FROM Channels WHERE Folder = ? AND Channel = ? AND Channel_ID = ? AND thumb = ?",(foldername,channel_name,channel_id,thumb))
 	except:
 		pass
-  
-	 
+
 	cur.execute("INSERT INTO Channels(Folder,Channel,Channel_ID,thumb) VALUES (?,?,?,?);",(foldername,channel_name,channel_id,thumb))
 	db.commit()
 	cur.close()
 
 def remove_channel(id):
 	
-	cur = db.cursor()    
-	cur.execute("begin")   
+	cur = db.cursor()
+	cur.execute("begin")
 
 	cur.execute("DELETE FROM Channels WHERE Channel_ID = ?;",(id,))
 
@@ -160,11 +152,10 @@ def search_channel(channel_name):
 
 	
 	req_url='https://www.googleapis.com/youtube/v3/search?q=%s&type=channel&part=snippet&maxResults=%s&key=%s'%(channel_name.replace(' ','%20'),str(result_num),YOUTUBE_API_KEY)
-	#req_url='https://www.googleapis.com/youtube/v3/search?q=%stype=channel&maxResults=20&part=snippet&key='%channel_name.replace(' ','%20') + YOUTUBE_API_KEY
 	read=read_url(req_url)
 	decoded_data=json.loads(read)
 	listout=[]
-	
+
 	for x in range(0, len(decoded_data['items'])):
 		title=decoded_data['items'][x]['snippet']['title']
 		thumb=decoded_data['items'][x]['snippet']['thumbnails']['high']['url']
