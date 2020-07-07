@@ -99,3 +99,38 @@ msgstr ""
 msgctxt "#30099"
 msgid "Youtube Channels"
 msgstr ""
+
+msgctxt "#30200"
+msgid "General"
+msgstr ""
+
+msgctxt "#30201"
+msgid "Enable playlists"
+msgstr ""
+
+msgctxt "#30202"
+msgid "Show 'Add folder/channel' options"
+msgstr ""
+
+msgctxt "#30203"
+msgid "Number of videos per page"
+msgstr ""
+
+msgctxt "#30204"
+msgid "Number of channel search results"
+msgstr ""
+
+msgctxt "#30205"
+msgid "Erase database"
+msgstr ""
+
+msgctxt "#30206"
+msgid "API Key"
+msgstr ""
+
+msgctxt "#30207"
+msgid "YouTube API Key"
+msgstr ""
+
+
+
