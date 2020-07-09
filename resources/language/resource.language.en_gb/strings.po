@@ -101,11 +101,11 @@ msgid "API Key Error"
 msgstr ""
 
 msgctxt "#30021"
-msgid "You must enter your YouTube API Key to continue. Please use the addon settings to set the API key."
+msgid "You must enter a YouTube API Key to continue. Please use the addon settings to set the API key."
 msgstr ""
 
 msgctxt "#30022"
-msgid "YouTube API Key required for addon to work, please enter API key now"
+msgid "A YouTube API Key is required for this addon to work, please enter your API key now."
 msgstr ""
 
 msgctxt "#30099"
