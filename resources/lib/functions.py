@@ -268,8 +268,6 @@ def get_latest_from_channel(channel_id, page):
 		duration = video_decoded['items'][x]['contentDetails']['duration']
 		seconds = yt_time(duration)
 		listout[x+1].append(seconds)
-	with open("c:\\tmp\\listout.txt", "w") as filehandle:
-		json.dump(listout, filehandle)
 	return listout
 
 def get_playlists(channelID,page):
