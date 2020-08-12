@@ -127,7 +127,7 @@ def init_database():
 		cur = db.cursor()
 		cur.execute("begin")
 		cur.execute("create table if not exists Folders (Name TEXT, Channel TEXT)")
-		cur.execute("create table if not exists Channels (Folder TEXT, Channel TEXT, Channel_ID TEXT,thumb TEXT)")
+		cur.execute("create table if not exists Channels (Folder TEXT, Channel TEXT, Channel_ID TEXT,thumb TEXT,sort INT)")
 		db.commit()
 		cur.close()
 	return
