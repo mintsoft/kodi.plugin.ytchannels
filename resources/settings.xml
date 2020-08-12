@@ -17,9 +17,9 @@
 					<level>0</level>
 					<default>20</default>
 					<constraints>
-						<minimum>5</minimum>
+						<minimum>10</minimum>
 						<step>5</step>
-						<maximum>50</maximum>
+						<maximum>100</maximum>
 					</constraints>
 					<control type="slider" format="integer">
 						<popup>false</popup>
@@ -43,6 +43,11 @@
 					<control type="button" format="action">
 						<close>true</close>
 					</control>
+				</setting>
+				<setting id="sort_init" type="boolean">
+					<default>false</default>
+					<visible>false</visible>
+					<control type="toggle"/>
 				</setting>
 			</group>
 		</category>
