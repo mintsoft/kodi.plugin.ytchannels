@@ -82,6 +82,14 @@ def move_down(id):
 def build_url(query):
 	return base_url + '?' + urllib.parse.urlencode(query)
 
+def check_sort_db():
+	cur = db.cursor()
+	cur.execute("SELECT 1 FROM pragma_table_info('Channels') WHERE name = 'sort';")
+	if cur.fetchall():
+		return True
+	else:
+		return False
+	
 def add_sort_db():
 	# Add sort column to existing database if it doesn't already exist and set initial sort values
 	cur = db.cursor()

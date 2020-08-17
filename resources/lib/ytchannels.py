@@ -39,17 +39,16 @@ def ytchannels_main():
 
 		YOUTUBE_API_KEY = my_addon.getSetting('youtube_api_key')
 
-	from .functions import build_url, delete_database, get_folders, add_folder, remove_folder, get_channels, get_channel_id_from_uploads_id, add_channel, remove_channel, search_channel, search_channel_by_username, get_latest_from_channel, get_playlists, add_sort_db, init_sort, move_up, move_down
+	from .functions import build_url, delete_database, get_folders, add_folder, remove_folder, get_channels, get_channel_id_from_uploads_id, add_channel, remove_channel, search_channel, search_channel_by_username, get_latest_from_channel, get_playlists, add_sort_db, init_sort, move_up, move_down, check_sort_db
 
-	SORT_INIT = my_addon.getSetting('sort_init')
-	if SORT_INIT == 'false':
+	SORT_INIT = check_sort_db()
+	if not SORT_INIT:
 		add_sort_db()
 		folders = get_folders()
 		init_sort('Other')
 		for i in range(len(folders)):
 			init_sort(folders[i])
 		my_addon.setSetting(id='sort_init', value='true')
-
 
 	if mode is None:
 		folders=get_folders()
@@ -86,13 +85,14 @@ def ytchannels_main():
 			items.append((local_string(30003), 'RunPlugin(%s)'%rem_uri))
 			items.append(('Add folder', 'RunPlugin(%s)'%add_uri))
 			items.append((local_string(30002), 'RunPlugin(%s)'%addch_uri))
-			if channels[i][3] == 1:
-				items.append((local_string(30024), 'RunPlugin(%s)'%move_down_uri))
-			elif channels[i][3] == len(channels):
-				items.append((local_string(30023), 'RunPlugin(%s)'%move_up_uri))
-			else:
-				items.append((local_string(30023), 'RunPlugin(%s)'%move_up_uri))
-				items.append((local_string(30024), 'RunPlugin(%s)'%move_down_uri))
+			if len(channels) > 1:
+				if channels[i][3] == 1:
+					items.append((local_string(30024), 'RunPlugin(%s)'%move_down_uri))
+				elif channels[i][3] == len(channels):
+					items.append((local_string(30023), 'RunPlugin(%s)'%move_up_uri))
+				else:
+					items.append((local_string(30023), 'RunPlugin(%s)'%move_up_uri))
+					items.append((local_string(30024), 'RunPlugin(%s)'%move_down_uri))
 
 			li.addContextMenuItems(items)
 			xbmcplugin.addDirectoryItem(handle=addon_handle, url=url,
@@ -165,13 +165,14 @@ def ytchannels_main():
 			move_up_uri = build_url({'mode': 'move_up', 'id': '%s'%channels[i][4]})
 			items = []
 			items.append((local_string(30003), 'RunPlugin(%s)'%rem_uri))
-			if channels[i][3] == 1:
-				items.append((local_string(30024), 'RunPlugin(%s)'%move_down_uri))
-			elif channels[i][3] == len(channels):
-				items.append((local_string(30023), 'RunPlugin(%s)'%move_up_uri))
-			else:
-				items.append((local_string(30023), 'RunPlugin(%s)'%move_up_uri))
-				items.append((local_string(30024), 'RunPlugin(%s)'%move_down_uri))
+			if len(channels) > 1:
+				if channels[i][3] == 1:
+					items.append((local_string(30024), 'RunPlugin(%s)'%move_down_uri))
+				elif channels[i][3] == len(channels):
+					items.append((local_string(30023), 'RunPlugin(%s)'%move_up_uri))
+				else:
+					items.append((local_string(30023), 'RunPlugin(%s)'%move_up_uri))
+					items.append((local_string(30024), 'RunPlugin(%s)'%move_down_uri))
 			li.addContextMenuItems(items)
 			xbmcplugin.addDirectoryItem(handle=addon_handle, url=url,
 								listitem=li,isFolder=True)
