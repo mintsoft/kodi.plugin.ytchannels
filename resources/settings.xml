@@ -6,7 +6,6 @@
 		<setting id="result_number" type="slider" default="20" range="5,5,50" option="int" label="30203"/>
 		<setting id="result_number_channels" type="slider" default="20" range="5,5,50" option="int" label="30204"/>
 		<setting label="30205" type="action" action="RunPlugin(plugin://plugin.video.ytchannels/?mode=erase_all)" enable="true" option="close"/>
-		<setting id="sort_init" type="bool" default="false" visible="false"/>
 	</category>
 	<category label="30206">
 		<setting id="youtube_api_key" type="text" default="SETME" label="30207"/>

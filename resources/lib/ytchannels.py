@@ -48,7 +48,6 @@ def ytchannels_main():
 		init_sort('Other')
 		for i in range(len(folders)):
 			init_sort(folders[i])
-		my_addon.setSetting(id='sort_init', value='true')
 
 	if mode is None:
 		folders=get_folders()
