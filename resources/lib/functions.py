@@ -83,12 +83,19 @@ def build_url(query):
 	return base_url + '?' + urllib.parse.urlencode(query)
 
 def check_sort_db():
+#	cur = db.cursor()
+#	cur.execute("SELECT 1 FROM pragma_table_info('Channels') WHERE name = 'sort';")
+#	if cur.fetchall():
+#		return True
+#	else:
+#		return False
+	# Other way didn't work with older version of sqlite (Leia x86)
 	cur = db.cursor()
-	cur.execute("SELECT 1 FROM pragma_table_info('Channels') WHERE name = 'sort';")
-	if cur.fetchall():
-		return True
-	else:
+	columns = [i[1] for i in cur.execute('PRAGMA table_info(Channels)')]
+	if 'sort' not in columns:
 		return False
+	else:
+		return True
 
 def add_sort_db():
 	# Add sort column to existing database if it doesn't already exist and set initial sort values
