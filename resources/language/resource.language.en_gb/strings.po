@@ -116,6 +116,18 @@ msgctxt "#30024"
 msgid "Move Down"
 msgstr ""
 
+msgctxt "#30025"
+msgid "Move Channel"
+msgstr ""
+
+msgctxt "#30026"
+msgid "Choose Image"
+msgstr ""
+
+msgctxt "#30027"
+msgid "Set Thumbnail"
+msgstr ""
+
 msgctxt "#30099"
 msgid "Youtube Channels"
 msgstr ""
