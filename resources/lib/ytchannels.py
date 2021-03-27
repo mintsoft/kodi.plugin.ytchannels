@@ -48,7 +48,7 @@ def ytchannels_main():
 
 		YOUTUBE_API_KEY = my_addon.getSetting('youtube_api_key')
 
-	from .functions import build_url, delete_database, get_folders, add_folder, remove_folder, get_channels, get_channel_id_from_uploads_id, add_channel, remove_channel, search_channel, search_channel_by_username, get_latest_from_channel, get_playlists, add_sort_db, init_sort, move_up, move_down, check_sort_db, move_channel, set_folder_thumbnail, get_folder_thumbnail, check_thumb_db, add_thumb_db
+	from .functions import build_url, delete_database, get_folders, add_folder, remove_folder, get_channels, get_channel_id_from_uploads_id, add_channel, remove_channel, search_channel, search_channel_by_username, get_latest_from_channel, get_playlists, add_sort_db, init_sort, move_up, move_down, check_sort_db, change_folder, set_folder_thumbnail, get_folder_thumbnail, check_thumb_db, add_thumb_db
 
 	SORT_INIT = check_sort_db()
 	THUMB_INIT = check_thumb_db()
@@ -91,7 +91,7 @@ def ytchannels_main():
 			li.setArt({'icon':'%s'%channels[i][2]})
 
 			rem_uri = build_url({'mode': 'rem_channel', 'channel_id': '%s'%str(channels[i][1])})
-			move_uri = build_url({'mode': 'move_channel', 'channel_id': '%s'%str(channels[i][1]), 'curfolder': 'Other'})
+			move_uri = build_url({'mode': 'change_folder', 'channel_id': '%s'%str(channels[i][1]), 'curfolder': 'Other'})
 			add_uri = build_url({'mode': 'add_folder'})
 			addch_uri = build_url({'mode': 'add_channel', 'foldername': 'Other'})
 			move_down_uri = build_url({'mode': 'move_down', 'id': '%s'%channels[i][4]})
@@ -177,7 +177,7 @@ def ytchannels_main():
 			li.setArt({'icon':'%s'%channels[i][2]})
 
 			rem_uri = build_url({'mode': 'rem_channel', 'channel_id': '%s'%str(channels[i][1])})
-			move_uri = build_url({'mode': 'move_channel', 'channel_id': '%s'%str(channels[i][1]), 'curfolder': '%s'%str(foldername)})
+			move_uri = build_url({'mode': 'change_folder', 'channel_id': '%s'%str(channels[i][1]), 'curfolder': '%s'%str(foldername)})
 			move_down_uri = build_url({'mode': 'move_down', 'id': '%s'%channels[i][4]})
 			move_up_uri = build_url({'mode': 'move_up', 'id': '%s'%channels[i][4]})
 			items = []
@@ -342,7 +342,7 @@ def ytchannels_main():
 	elif mode[0]=='rem_channel':
 		dicti=urllib.parse.parse_qs(sys.argv[2][1:])
 		channel_id=dicti['channel_id'][0]
-		remove_channel(channel_id)
+		change_folder(channel_id)
 		xbmc.executebuiltin("Container.Refresh")
 
 	elif mode[0]=='rem_folder':
@@ -351,18 +351,18 @@ def ytchannels_main():
 		remove_folder(foldername)
 		xbmc.executebuiltin("Container.Refresh")
 
-	elif mode[0]=='move_channel':
+	elif mode[0]=='change_folder':
 		dicti=urllib.parse.parse_qs(sys.argv[2][1:])
 		channel_id=dicti['channel_id'][0]
 		curfolder=dicti['curfolder'][0]
 		folders=get_folders()
 		if not curfolder=="Other":
-			folders.append("Root")
+			folders.append("root")
 			folders.remove(curfolder)
 		dialog = xbmcgui.Dialog()
 		index = dialog.select(local_string(30011), folders)
 		if index>-1:
-			move_channel(channel_id, folders[index])
+			change_folder(channel_id, folders[index])
 		xbmc.executebuiltin("Container.Refresh")
 
 	elif mode[0]=='set_thumbnail':
