@@ -232,8 +232,8 @@ def add_channel(foldername,channel_name,channel_id,thumb):
 	db.commit()
 	cur.close()
 
-def move_channel(channel_id, folder_name):
-	if folder_name=="Root":
+def change_folder(channel_id, folder_name):
+	if folder_name=="root":
 		folder_name="Other"
 	cur = db.cursor()
 	cur.execute("begin")
