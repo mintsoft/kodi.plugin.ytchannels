@@ -237,7 +237,9 @@ def change_folder(channel_id, folder_name):
 		folder_name="Other"
 	cur = db.cursor()
 	cur.execute("begin")
-	cur.execute("UPDATE Channels SET Folder = ? WHERE Channel_ID = ?;",(folder_name, channel_id))
+	cur.execute("SELECT * From Channels WHERE Folder = ?",(folder_name,))
+	sort = len(cur.fetchall()) + 1
+	cur.execute("UPDATE Channels SET Folder = ?, sort = ? WHERE Channel_ID = ?;",(folder_name, sort, channel_id))
 	db.commit()
 	cur.close()
 
