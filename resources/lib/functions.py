@@ -12,7 +12,10 @@ from six.moves import urllib
 addonID = xbmcaddon.Addon().getAddonInfo("id")
 addon = xbmcaddon.Addon(addonID)
 db_path = addon.getAddonInfo('profile')
-db_file = xbmc.translatePath("%s/youtube_channels.db" % db_path)
+if sys.version_info.major == 3:
+	db_file = xbmcvfs.translatePath("%s/youtube_channels.db" % db_path)
+else
+	db_file = xbmc.translatePath("%s/youtube_channels.db" % db_path)
 
 if not xbmcvfs.exists(db_path):
 	xbmcvfs.mkdirs(db_path)
