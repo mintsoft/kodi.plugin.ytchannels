@@ -14,7 +14,7 @@ addon = xbmcaddon.Addon(addonID)
 db_path = addon.getAddonInfo('profile')
 if sys.version_info.major == 3:
 	db_file = xbmcvfs.translatePath("%s/youtube_channels.db" % db_path)
-else
+else:
 	db_file = xbmc.translatePath("%s/youtube_channels.db" % db_path)
 
 if not xbmcvfs.exists(db_path):
