@@ -269,7 +269,7 @@ def get_folder_thumbnail(folder_name):
 	thumb = cur.fetchone()[0]
 	db.commit()
 	cur.close()
-	
+
 	return thumb
 
 def search_channel(channel_name):
@@ -391,6 +391,29 @@ def get_playlists(channelID,page):
 
 			playlists.append([playlist_id,playlist_name,thumb])
 	return playlists
+
+def get_livestreams(channelID,page):
+	if page=='1':
+		url='https://youtube.googleapis.com/youtube/v3/search?part=snippet&channelId=%s&eventType=live&order=date&type=video&key=%s'%(channelID,YOUTUBE_API_KEY)
+	else:
+		url='https://youtube.googleapis.com/youtube/v3/search?part=snippet&channelId=%s&eventType=live%order=date%type=video&pageToken=%s&key=%s'%(channelID,page,YOUTUBE_API_KEY)
+	read=read_url(url)
+	decoded_data=json.loads(read)
+	livestreams=[]
+	try:
+		next_page=decoded_data['nextPageToken']
+	except:
+		next_page='1'
+	livestreams.append(next_page)
+	for i in range(len(decoded_data['items'])):
+		title = decoded_data['items'][i]['snippet']['title']
+		video_id = decoded_data['items'][i]['id']['videoId']
+		thumb = decoded_data['items'][i]['snippet']['thumbnails']['high']['url']
+		desc = decoded_data['items'][i]['snippet']['description']
+		date = re.search("[0-9]{4}-[0-9]{2}-[0-9]{2}", decoded_data['items'][i]['snippet']['publishedAt'])
+		livestreams.append([title, video_id, thumb, desc, date.group()])
+
+	return livestreams
 
 def local_string(string_id):
 	return my_addon.getLocalizedString(string_id)
