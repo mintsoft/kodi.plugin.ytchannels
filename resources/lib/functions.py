@@ -400,18 +400,28 @@ def get_livestreams(channelID,page):
 	read=read_url(url)
 	decoded_data=json.loads(read)
 	livestreams=[]
+	videoids=[]
 	try:
 		next_page=decoded_data['nextPageToken']
 	except:
 		next_page='1'
 	livestreams.append(next_page)
-	for i in range(len(decoded_data['items'])):
-		title = decoded_data['items'][i]['snippet']['title']
+	
+	for i in range(0, len(decoded_data['items'])):
 		video_id = decoded_data['items'][i]['id']['videoId']
-		thumb = decoded_data['items'][i]['snippet']['thumbnails']['high']['url']
-		desc = decoded_data['items'][i]['snippet']['description']
-		date = re.search("[0-9]{4}-[0-9]{2}-[0-9]{2}", decoded_data['items'][i]['snippet']['publishedAt'])
-		livestreams.append([title, video_id, thumb, desc, date.group()])
+		videoids.append(video_id)
+
+	video_req_url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=%s&key=%s' % (','.join(videoids), YOUTUBE_API_KEY)
+	video_read = read_url(video_req_url)
+	video_decoded = json.loads(video_read)
+	sorted_data = sorted((video_decoded['items']), key=(lambda i: i['snippet']['publishedAt']), reverse=True)
+	
+	for i in range(0, len(sorted_data)):
+		title = sorted_data[i]['snippet']['title']
+		video_id = sorted_data[i]['id']
+		thumb = sorted_data[i]['snippet']['thumbnails']['high']['url']
+		desc = sorted_data[i]['snippet']['description']
+		livestreams.append([title, video_id, thumb, desc])
 
 	return livestreams
 

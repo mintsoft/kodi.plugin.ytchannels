@@ -317,19 +317,14 @@ def ytchannels_main():
 			video_id=livestreams[i][1]
 			thumb=livestreams[i][2]
 			desc=livestreams[i][3]
-			date=livestreams[i][4]
 
-			try:
-				pub = datetime.datetime.strftime(datetime.datetime.strptime(date, '%Y-%m-%d'), xbmc_region)
-				plot = "Published: " + pub + "\r\n\r\n" +  desc
-			except:
-				plot = desc
+			plot = desc
 
 			uri='plugin://plugin.video.youtube/play/?video_id='+video_id
 			li = xbmcgui.ListItem('%s'%title)
 			li.setArt({'icon':thumb})
 			li.setProperty('IsPlayable', 'true')
-			li.setInfo('video', { 'genre': 'YouTube', 'plot': plot } )
+			li.setInfo('video', { 'plot': plot } )
 
 			xbmcplugin.addDirectoryItem(handle=addon_handle, url=uri, listitem=li)
 
