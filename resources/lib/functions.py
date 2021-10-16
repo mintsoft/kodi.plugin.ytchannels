@@ -276,7 +276,8 @@ def search_channel(channel_name):
 	my_addon = xbmcaddon.Addon()
 	result_num = my_addon.getSetting('result_number_channels')
 
-	req_url='https://www.googleapis.com/youtube/v3/search?q=%s&type=channel&part=snippet&maxResults=%s&key=%s'%(channel_name.replace(' ','%20'),str(result_num),YOUTUBE_API_KEY)
+	channel_name = urllib.parse.quote(channel_name)
+	req_url='https://www.googleapis.com/youtube/v3/search?q=%s&type=channel&part=snippet&maxResults=%s&key=%s'%(channel_name,str(result_num),YOUTUBE_API_KEY)
 	read=read_url(req_url)
 	decoded_data=json.loads(read)
 	listout=[]
