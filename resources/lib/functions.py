@@ -52,7 +52,7 @@ def yt_time(duration="P1W2DT6H21M32S"):
 	# Put list in ascending order & remove 'None' types
 	units = list(reversed([int(x) if x != None else 0 for x in units]))
 	# Do the maths
-	return sum([x*60**units.index(x) for x in units])
+	return units[2]*60*60 + units[1]*60 + units[0]
 
 def move_up(id):
 	cur = db.cursor()
