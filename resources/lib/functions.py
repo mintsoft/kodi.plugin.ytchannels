@@ -285,13 +285,14 @@ def search_channel(channel_name):
 	for x in range(0, len(decoded_data['items'])):
 		title=decoded_data['items'][x]['snippet']['title']
 		thumb=decoded_data['items'][x]['snippet']['thumbnails']['high']['url']
+		desc=decoded_data['items'][x]['snippet']['description']
 		channel_id=decoded_data['items'][x]['snippet']['channelId']
 		req1='https://www.googleapis.com/youtube/v3/channels?part=contentDetails&id=%s&key=%s'%(channel_id,YOUTUBE_API_KEY)
 		read2=read_url(req1)
 		decoded_data2=json.loads(read2)
 		try:
 			channel_uplid=decoded_data2['items'][0]['contentDetails']['relatedPlaylists']['uploads']
-			listout.append([title,channel_uplid,thumb,channel_id])
+			listout.append([title,channel_uplid,thumb,channel_id,desc])
 		except:
 			pass
 
@@ -313,11 +314,13 @@ def search_channel_by_username(username):
 
 		title=decoded_data['items'][0]['snippet']['title']
 		thumb=decoded_data['items'][0]['snippet']['thumbnails']['high']['url']
+		desc=decoded_data['items'][0]['snippet']['description']
 		channel_uplid=uploads_id
 		listout.append(title)
 		listout.append(channel_uplid)
 		listout.append(thumb)
 		listout.append(channel_id)
+		listout.append(desc)
 		return listout
 	elif decoded_data['pageInfo']['totalResults']==0:
 		return 'not found'
