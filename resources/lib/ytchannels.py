@@ -377,7 +377,7 @@ def ytchannels_main():
 					li[i] = xbmcgui.ListItem(results[i][0],results[i][4])
 					li[i].setArt({'icon':results[i][2]})
 				dialog = xbmcgui.Dialog()
-				index = dialog.select(local_string(30013), li)
+				index = dialog.select(local_string(30013), li, useDetails=True)
 				if index>-1:
 					channel_uplid=results[index][1]
 					channel_name=results[index][0]
