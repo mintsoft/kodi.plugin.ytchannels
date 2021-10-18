@@ -7,6 +7,7 @@ import sqlite3
 import json
 import sys
 import re
+from requests.utils import requote_uri
 from six.moves import urllib
 
 addonID = xbmcaddon.Addon().getAddonInfo("id")
@@ -145,6 +146,7 @@ def delete_database():
 	return
 
 def read_url(url):
+	url = requote_uri(url)
 	req = urllib.request.Request(url)
 	req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 6.1; rv:33.0) Gecko/20100101 Firefox/33.0')
 	response = urllib.request.urlopen(req)
@@ -276,7 +278,6 @@ def search_channel(channel_name):
 	my_addon = xbmcaddon.Addon()
 	result_num = my_addon.getSetting('result_number_channels')
 
-	channel_name = urllib.parse.quote(channel_name)
 	req_url='https://www.googleapis.com/youtube/v3/search?q=%s&type=channel&part=snippet&maxResults=%s&key=%s'%(channel_name,str(result_num),YOUTUBE_API_KEY)
 	read=read_url(req_url)
 	decoded_data=json.loads(read)
