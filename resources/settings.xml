@@ -50,6 +50,16 @@
 					</control>
 				</setting>
 			</group>
+			<group id="1">
+				<setting id="use_invidious" type="boolean" label="30209">
+					<level>0</level>
+					<default>false</default>
+					<control type="toggle"/>
+					<dependencies>
+						<dependency type="visible" on="property" name="InfoBool">System.AddonIsEnabled(plugin.video.invidious)</dependency>
+					</dependencies>
+				</setting>
+			</group>
 		</category>
 		<category id="apikey" label="30206">
 			<group id="0">

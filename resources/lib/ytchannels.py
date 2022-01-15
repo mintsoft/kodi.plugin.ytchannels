@@ -22,6 +22,7 @@ def ytchannels_main():
 	my_addon = xbmcaddon.Addon()
 	enable_playlists = my_addon.getSetting('enable_playlists')
 	enable_livestreams = my_addon.getSetting('enable_livestreams')
+	use_invidious = my_addon.getSetting('use_invidious')
 
 	addon_handle = int(sys.argv[1])
 	args = urllib.parse.parse_qs(sys.argv[2][1:])
@@ -253,12 +254,24 @@ def ytchannels_main():
 				plot = "Published: " + pub + "\r\n\r\n" +  desc
 			except:
 				plot = desc
-
-			uri='plugin://plugin.video.youtube/play/?video_id='+video_id
+			if use_invidious=='true' and xbmc.getCondVisibility('System.AddonIsEnabled(plugin.video.invidious)'):
+				uri='plugin://plugin.video.invidious/?action=video&videoId='+video_id
+			else:
+				uri='plugin://plugin.video.youtube/play/?video_id='+video_id
 			li = xbmcgui.ListItem('%s'%title)
 			li.setArt({'icon':thumb})
 			li.setProperty('IsPlayable', 'true')
 			li.setInfo('video', { 'genre': 'YouTube', 'plot': plot, 'duration': seconds } )
+			if use_invidious=='false' and xbmc.getCondVisibility('System.AddonIsEnabled(plugin.video.invidious)'):
+				play_invidious_uri = 'plugin://plugin.video.invidious/?action=video&videoId='+video_id
+				contextItems = []
+				contextItems.append((local_string(30030), 'PlayMedia(%s)'%play_invidious_uri))
+				li.addContextMenuItems(contextItems)
+			elif use_invidious=='true' and xbmc.getCondVisibility('System.AddonIsEnabled(plugin.video.youtube)'):
+				play_youtube_uri = 'plugin://plugin.video.youtube/play/?video_id='+video_id
+				contextItems = []
+				contextItems.append((local_string(30031), 'PlayMedia(%s)'%play_youtube_uri))
+				li.addContextMenuItems(contextItems)
 
 			xbmcplugin.addDirectoryItem(handle=addon_handle, url=uri, listitem=li)#,isFolder=True)
 
@@ -320,11 +333,24 @@ def ytchannels_main():
 
 			plot = desc
 
-			uri='plugin://plugin.video.youtube/play/?video_id='+video_id
+			if use_invidious=='true' and xbmc.getCondVisibility('System.AddonIsEnabled(plugin.video.invidious)'):
+				uri='plugin://plugin.video.invidious/?action=video&videoId='+video_id
+			else:
+				uri='plugin://plugin.video.youtube/play/?video_id='+video_id
 			li = xbmcgui.ListItem('%s'%title)
 			li.setArt({'icon':thumb})
 			li.setProperty('IsPlayable', 'true')
 			li.setInfo('video', { 'plot': plot } )
+			if use_invidious=='false' and xbmc.getCondVisibility('System.AddonIsEnabled(plugin.video.invidious)'):
+				play_invidious_uri = 'plugin://plugin.video.invidious/?action=video&videoId='+video_id
+				contextItems = []
+				contextItems.append((local_string(30030), 'PlayMedia(%s)'%play_invidious_uri))
+				li.addContextMenuItems(contextItems)
+			elif use_invidious=='true' and xbmc.getCondVisibility('System.AddonIsEnabled(plugin.video.youtube)'):
+				play_youtube_uri = 'plugin://plugin.video.youtube/play/?video_id='+video_id
+				contextItems = []
+				contextItems.append((local_string(30031), 'PlayMedia(%s)'%play_youtube_uri))
+				li.addContextMenuItems(contextItems)
 
 			xbmcplugin.addDirectoryItem(handle=addon_handle, url=uri, listitem=li)
 
@@ -346,11 +372,12 @@ def ytchannels_main():
 
 				results=search_channel(channel_name)
 
-				result_list=[]
+				li=[None]*len(results)
 				for i in range(len(results)):
-					result_list+=[results[i][0]]
+					li[i] = xbmcgui.ListItem(results[i][0],results[i][4])
+					li[i].setArt({'icon':results[i][2]})
 				dialog = xbmcgui.Dialog()
-				index = dialog.select(local_string(30013), result_list)
+				index = dialog.select(local_string(30013), li, useDetails=True)
 				if index>-1:
 					channel_uplid=results[index][1]
 					channel_name=results[index][0]
