@@ -137,10 +137,6 @@ msgctxt "#30029"
 msgid "Live"
 msgstr ""
 
-msgctxt "#30030"
-msgid "Play using Invidious"
-msgstr ""
-
 msgctxt "#30031"
 msgid "Playing using YouTube"
 msgstr ""
@@ -183,8 +179,4 @@ msgstr ""
 
 msgctxt "#30208"
 msgid "Enable live streams"
-msgstr ""
-
-msgctxt "#30209"
-msgid "Use Invidious instead of YouTube addon"
 msgstr ""
