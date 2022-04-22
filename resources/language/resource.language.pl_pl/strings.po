@@ -155,7 +155,7 @@ msgstr "Włącz listy odtwarzania"
 
 msgctxt "#30202"
 msgid "Show 'add folder/channel' options"
-msgstr "Pokaż opcje „dodaj folder/kanał”"
+msgstr "Pokaż opcje 'dodaj folder/kanał'"
 
 msgctxt "#30203"
 msgid "Number of videos per page"
