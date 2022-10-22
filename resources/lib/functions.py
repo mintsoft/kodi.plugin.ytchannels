@@ -338,7 +338,7 @@ def get_channel_id(channel_username):
 	elif decoded_data['pageInfo']['totalResults']==0:
 		return 'not found'
 
-def get_latest_from_channel(channel_id, page):
+def get_latest_from_channel(channel_id, page, filter_shorts):
 	my_addon = xbmcaddon.Addon()
 	result_num = my_addon.getSetting('result_number')
 
@@ -348,6 +348,7 @@ def get_latest_from_channel(channel_id, page):
 		req_url='https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&fields=items/snippet/resourceId/videoId,nextPageToken&pageToken=%s&maxResults=%s&playlistId=%s&key='%(page,str(result_num),channel_id)+YOUTUBE_API_KEY
 	read=read_url(req_url)
 	decoded_data=json.loads(read)
+
 	listout=[]
 	videoids=[]
 	try:
@@ -362,6 +363,7 @@ def get_latest_from_channel(channel_id, page):
 
 	video_req_url = 'https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&id=%s&key=%s' % (','.join(videoids), YOUTUBE_API_KEY)
 	video_read = read_url(video_req_url)
+
 	video_decoded = json.loads(video_read)
 	sorted_data = sorted((video_decoded['items']), key=(lambda x: x['snippet']['publishedAt']), reverse=True)
 	for x in range(0, len(sorted_data)):
@@ -372,8 +374,31 @@ def get_latest_from_channel(channel_id, page):
 		duration = sorted_data[x]['contentDetails']['duration']
 		seconds = yt_time(duration)
 		date = re.search("[0-9]{4}-[0-9]{2}-[0-9]{2}", sorted_data[x]['snippet']['publishedAt'])
+
+		if filter_shorts and is_short(video_id):
+			continue
+
 		listout.append([title, video_id, thumb, desc, seconds, date.group()])
 	return listout
+
+class RedirectFilter(urllib.request.HTTPRedirectHandler):
+	def redirect_request(self, req, fp, code, msg, hdrs, newurl):
+		return None # do not redirect, HTTPError will be raised
+
+def is_short(videoId):
+	url = "https://www.youtube.com/shorts/" + videoId
+	url = requote_uri(url)
+	opener = urllib.request.build_opener(RedirectFilter)
+
+	req = urllib.request.Request(url, method="HEAD")
+	req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 6.1; rv:33.0) Gecko/20100101 Firefox/33.0')
+	try:
+		response = opener.open(req)
+		response.close()
+	except:
+		return False
+
+	return True
 
 def get_playlists(channelID,page):
 	if page=='1':
