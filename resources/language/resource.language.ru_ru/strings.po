@@ -180,3 +180,7 @@ msgstr "Ключ YouTube API"
 msgctxt "#30208"
 msgid "Enable live streams"
 msgstr "Разрешить прямые эфиры"
+
+msgctxt "#30209"
+msgid "Filter out shorts"
+msgstr "Отфильтровать #shorts"
