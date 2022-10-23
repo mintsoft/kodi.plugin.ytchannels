@@ -183,4 +183,4 @@ msgstr "Włącz transmisje na żywo"
 
 msgctxt "#30209"
 msgid "Filter out shorts"
-msgstr "Odfiltruj #szorty"
+msgstr "Nie pokazuj krótkich filmów"

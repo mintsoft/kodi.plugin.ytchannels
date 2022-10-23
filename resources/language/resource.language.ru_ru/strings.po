@@ -183,4 +183,4 @@ msgstr "Разрешить прямые эфиры"
 
 msgctxt "#30209"
 msgid "Filter out shorts"
-msgstr "Отфильтровать #shorts"
+msgstr "Скрывать короткие видео"
