@@ -33,11 +33,11 @@ addon_handle = int(sys.argv[1])
 # https://stackoverflow.com/a/49976787
 def yt_time(duration="P1W2DT6H21M32S"):
     """
-	Converts YouTube duration (ISO 8061)
-	into Seconds
+    Converts YouTube duration (ISO 8061)
+    into Seconds
 
-	see http://en.wikipedia.org/wiki/ISO_8601#Durations
-	"""
+    see http://en.wikipedia.org/wiki/ISO_8601#Durations
+    """
     ISO_8601 = re.compile(
         'P'  # designates a period
         '(?:(?P<years>\d+)Y)?'  # years
