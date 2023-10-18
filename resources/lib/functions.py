@@ -151,7 +151,18 @@ def sort_folder_alphabetically(folder):
     cur.execute('SELECT Channel, RANK () OVER (ORDER BY Channel ASC) AS newSort FROM Channels WHERE Folder = ?', (folder,))
     null_rows = cur.fetchall()
     for row in null_rows:
-        cur.execute("Update Channels SET sort = ? WHERE Folder = ? AND Channel = ?;", (row[1], folder, row[0]))
+        cur.execute("UPDATE Channels SET sort = ? WHERE Folder = ? AND Channel = ?;", (row[1], folder, row[0]))
+    db.commit()
+    cur.close()
+    return
+
+
+def fix_duplicate_sorts(folder):
+    cur = db.cursor()
+    cur.execute('SELECT Channel, RANK () OVER (ORDER BY sort, Channel ASC) AS newSort, sort FROM Channels WHERE Folder = ?', (folder,))
+    null_rows = cur.fetchall()
+    for row in null_rows:
+        cur.execute("UPDATE Channels SET sort = ? WHERE Folder = ? AND Channel = ?;", (row[1], folder, row[0]))
     db.commit()
     cur.close()
     return
