@@ -146,6 +146,17 @@ def init_sort(folder):
     return
 
 
+def sort_folder_alphabetically(folder):
+    cur = db.cursor()
+    cur.execute('SELECT Channel, RANK () OVER (ORDER BY Channel ASC) AS newSort FROM Channels WHERE Folder = ?', (folder,))
+    null_rows = cur.fetchall()
+    for row in null_rows:
+        cur.execute("Update Channels SET sort = ? WHERE Folder = ? AND Channel = ?;", (row[1], folder, row[0]))
+    db.commit()
+    cur.close()
+    return
+
+
 def delete_database():
     with db:
         cur = db.cursor()
