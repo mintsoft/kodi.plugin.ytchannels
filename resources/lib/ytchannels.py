@@ -98,12 +98,16 @@ def ytchannels_main():
 			addch_uri = build_url({'mode': 'add_channel', 'foldername': 'Other'})
 			move_down_uri = build_url({'mode': 'move_down', 'id': '%s'%channels[i][4]})
 			move_up_uri = build_url({'mode': 'move_up', 'id': '%s'%channels[i][4]})
+
+			sort_this_uri = build_url({'mode': 'sort_this', 'foldername': '%s'%str(channels[i][1])})
+
 			items = []
 			items.append((local_string(30028 if channels[i][1].startswith('PL', 0, 2) else 30003), 'RunPlugin(%s)'%rem_uri))
 			items.append((local_string(30025), 'RunPlugin(%s)'%move_uri))
 			items.append((local_string(30001), 'RunPlugin(%s)'%add_uri))
 			items.append((local_string(30002), 'RunPlugin(%s)'%addch_uri))
 			if len(channels) > 1:
+				items.append((local_string(30032), 'RunPlugin(%s)'%sort_this_uri))
 				if channels[i][3] == 1:
 					items.append((local_string(30024), 'RunPlugin(%s)'%move_down_uri))
 				elif channels[i][3] == len(channels):
@@ -156,6 +160,11 @@ def ytchannels_main():
 		move_down(id[0])
 		xbmc.executebuiltin("Container.Refresh")
 
+	elif mode[0] == "sort_this":
+		foldername = args.get("foldername", None)
+		sort_folder_alphabetically(foldername)
+		xbmc.executebuiltin("Container.Refresh")
+
 	elif mode[0]=='add_folder':
 		keyboard = xbmc.Keyboard('', '%s:'%local_string(30011), False)
 		keyboard.doModal()
@@ -182,10 +191,13 @@ def ytchannels_main():
 			move_uri = build_url({'mode': 'change_folder', 'channel_id': '%s'%str(channels[i][1]), 'curfolder': '%s'%str(foldername)})
 			move_down_uri = build_url({'mode': 'move_down', 'id': '%s'%channels[i][4]})
 			move_up_uri = build_url({'mode': 'move_up', 'id': '%s'%channels[i][4]})
+			sort_this_uri = build_url({'mode': 'sort_this', 'foldername': '%s'%str(channels[i][1])})
+
 			items = []
 			items.append((local_string(30028 if channels[i][1].startswith('PL', 0, 2) else 30003), 'RunPlugin(%s)'%rem_uri))
 			items.append((local_string(30025), 'RunPlugin(%s)'%move_uri))
 			if len(channels) > 1:
+				items.append((local_string(30032), 'RunPlugin(%s)'%sort_this_uri))
 				if channels[i][3] == 1:
 					items.append((local_string(30024), 'RunPlugin(%s)'%move_down_uri))
 				elif channels[i][3] == len(channels):
