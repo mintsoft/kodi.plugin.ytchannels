@@ -50,7 +50,7 @@ def ytchannels_main():
 
 		YOUTUBE_API_KEY = my_addon.getSetting('youtube_api_key')
 
-	from .functions import build_url, delete_database, get_folders, add_folder, remove_folder, get_channels, get_channel_id_from_uploads_id, add_channel, remove_channel, search_channel, search_channel_by_username, get_latest_from_channel, get_playlists, add_sort_db, init_sort, move_up, move_down, check_sort_db, change_folder, set_folder_thumbnail, get_folder_thumbnail, check_thumb_db, add_thumb_db, get_livestreams
+	from .functions import build_url, delete_database, get_folders, add_folder, remove_folder, get_channels, get_channel_id_from_uploads_id, add_channel, remove_channel, search_channel, search_channel_by_username, get_latest_from_channel, get_playlists, add_sort_db, init_sort, move_up, move_down, check_sort_db, change_folder, set_folder_thumbnail, get_folder_thumbnail, check_thumb_db, add_thumb_db, get_livestreams, sort_folder_alphabetically, fix_duplicate_sorts
 
 	SORT_INIT = check_sort_db()
 	THUMB_INIT = check_thumb_db()
