@@ -99,7 +99,7 @@ def ytchannels_main():
 			move_down_uri = build_url({'mode': 'move_down', 'id': '%s'%channels[i][4]})
 			move_up_uri = build_url({'mode': 'move_up', 'id': '%s'%channels[i][4]})
 
-			sort_this_uri = build_url({'mode': 'sort_this', 'foldername': '%s'%str(channels[i][1])})
+			sort_this_uri = build_url({'mode': 'sort_this', 'curfolder': 'Other'})
 
 			items = []
 			items.append((local_string(30028 if channels[i][1].startswith('PL', 0, 2) else 30003), 'RunPlugin(%s)'%rem_uri))
@@ -161,8 +161,8 @@ def ytchannels_main():
 		xbmc.executebuiltin("Container.Refresh")
 
 	elif mode[0] == "sort_this":
-		foldername = args.get("foldername", None)
-		sort_folder_alphabetically(foldername)
+		foldername = args.get("curfolder", None)
+		sort_folder_alphabetically(foldername[0])
 		xbmc.executebuiltin("Container.Refresh")
 
 	elif mode[0]=='add_folder':
@@ -191,7 +191,7 @@ def ytchannels_main():
 			move_uri = build_url({'mode': 'change_folder', 'channel_id': '%s'%str(channels[i][1]), 'curfolder': '%s'%str(foldername)})
 			move_down_uri = build_url({'mode': 'move_down', 'id': '%s'%channels[i][4]})
 			move_up_uri = build_url({'mode': 'move_up', 'id': '%s'%channels[i][4]})
-			sort_this_uri = build_url({'mode': 'sort_this', 'foldername': '%s'%str(channels[i][1])})
+			sort_this_uri = build_url({'mode': 'sort_this', 'curfolder': '%s'%str(foldername)})
 
 			items = []
 			items.append((local_string(30028 if channels[i][1].startswith('PL', 0, 2) else 30003), 'RunPlugin(%s)'%rem_uri))
