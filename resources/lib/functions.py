@@ -277,8 +277,9 @@ def add_channel(foldername, channel_name, channel_id, thumb):
     except:
         pass
 
-    cur.execute("SELECT * FROM Channels WHERE Folder = ?", (foldername,))
-    sort = len(cur.fetchall()) + 1
+    cur.execute("SELECT MAX(sort)+1 AS newSort FROM Channels WHERE Folder = ?", (foldername,))
+    sort = cur.fetchall()[0][0]
+
     cur.execute("INSERT INTO Channels(Folder,Channel,Channel_ID,thumb,sort) VALUES (?,?,?,?,?);",
                 (foldername, channel_name, channel_id, thumb, sort))
     db.commit()
@@ -290,8 +291,10 @@ def change_folder(channel_id, folder_name):
         folder_name = "Other"
     cur = db.cursor()
     cur.execute("begin")
-    cur.execute("SELECT * From Channels WHERE Folder = ?", (folder_name,))
-    sort = len(cur.fetchall()) + 1
+
+    cur.execute("SELECT MAX(sort)+1 AS newSort FROM Channels WHERE Folder = ?", (folder_name,))
+    sort = cur.fetchall()[0][0]
+
     cur.execute("UPDATE Channels SET Folder = ?, sort = ? WHERE Channel_ID = ?;", (folder_name, sort, channel_id))
     db.commit()
     cur.close()
