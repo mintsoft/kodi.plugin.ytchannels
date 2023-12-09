@@ -453,7 +453,7 @@ class RedirectFilter(urllib.request.HTTPRedirectHandler):
 
 
 def is_short(videoId, seconds):
-    if seconds <= 60:
+    if seconds <= 61:
         return True
     return False
 
