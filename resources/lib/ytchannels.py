@@ -88,7 +88,7 @@ def ytchannels_main():
 
 		channels=get_channels('Other')
 		for i in range(len(channels)):
-			url = build_url({'mode': 'open_channel', 'foldername': '%s'%str(channels[i][1]), 'page':'1', 'parent_folder': 'Other'})
+			url = build_url({'mode': 'open_channel', 'foldername': '%s'%str(channels[i][1]), 'page':'1', 'page_index': '1', 'parent_folder': 'Other'})
 			li = xbmcgui.ListItem('%s'%channels[i][0])
 			li.setArt({'icon':'%s'%channels[i][2]})
 
@@ -181,7 +181,7 @@ def ytchannels_main():
 		channels=get_channels(foldername)
 
 		for i in range(len(channels)):
-			url = build_url({'mode': 'open_channel', 'foldername': '%s'%str(channels[i][1]), 'page':'1', 'parent_folder': '%s'%str(foldername)})
+			url = build_url({'mode': 'open_channel', 'foldername': '%s'%str(channels[i][1]), 'page':'1', 'page_index': '1', 'parent_folder': '%s'%str(foldername)})
 			li = xbmcgui.ListItem('%s'%channels[i][0])
 			li.setArt({'icon':'%s'%channels[i][2]})
 
@@ -217,7 +217,7 @@ def ytchannels_main():
 	elif mode[0]=='open_channel':
 		dicti=urllib.parse.parse_qs(sys.argv[2][1:])
 		page=dicti['page'][0]
-
+		page_index = int(dicti['page_index'][0])
 		id=dicti['foldername'][0]
 
 		try:
@@ -238,17 +238,17 @@ def ytchannels_main():
 			folder_uri = build_url({})
 		
 		if page != "1":
-			li = xbmcgui.ListItem('[COLOR green]%(action)s[/COLOR]'%{ 'action': local_string(30210) })
+			li = xbmcgui.ListItem('[COLOR green]%(action)s[/COLOR] (%(onpage)s%(page)s)'%{ 'action': local_string(30210), 'onpage': local_string(30211), 'page': str(page_index)})
 			xbmcplugin.addDirectoryItem(handle=addon_handle, url=folder_uri, listitem=li, isFolder=True)
 
 		if not playlista and enable_playlists=='true':
-			url = build_url({'mode': 'open_playlists', 'id':'%s'%id, 'page':'1'})
+			url = build_url({'mode': 'open_playlists', 'id':'%s'%id, 'page':'1', 'page_index': '1'})
 			li = xbmcgui.ListItem('[COLOR yellow]%s[/COLOR]'%local_string(30004))
 			li.setArt({'icon':playlist_img})
 			xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li,isFolder=True)
 
 		if enable_livestreams=='true':
-			url = build_url({'mode': 'open_livestreams', 'id':'%s'%id, 'page':'1'})
+			url = build_url({'mode': 'open_livestreams', 'id':'%s'%id, 'page':'1', 'page_index': '1'})
 			li = xbmcgui.ListItem('[COLOR blue]%s[/COLOR]'%local_string(30029))
 			li.setArt({'icon':playlist_img})
 			xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li,isFolder=True)
@@ -282,9 +282,9 @@ def ytchannels_main():
 
 		if next_page!='1':
 			if playlista:
-				uri = build_url({'mode': 'open_channel', 'foldername': '%s'%id, 'page' : '%s'%next_page ,'playlist':'yes', 'parent_folder': '%s'%dicti['parent_folder'][0]})
+				uri = build_url({'mode': 'open_channel', 'foldername': '%s'%id, 'page' : '%s'%next_page, 'page_index' : '%s'%(page_index+1) ,'playlist':'yes', 'parent_folder': '%s'%dicti['parent_folder'][0] })
 			else:
-				uri = build_url({'mode': 'open_channel', 'foldername': '%s'%id, 'page' : '%s'%next_page , 'parent_folder': '%s'%dicti['parent_folder'][0]})
+				uri = build_url({'mode': 'open_channel', 'foldername': '%s'%id, 'page' : '%s'%next_page, 'page_index' : '%s'%(page_index+1) , 'parent_folder': '%s'%dicti['parent_folder'][0] })
 
 			li = xbmcgui.ListItem('%s >>'%local_string(30005))
 			li.setArt({'icon':folder_img})
@@ -305,7 +305,7 @@ def ytchannels_main():
 			name=playlists[i][1]
 			thumb=playlists[i][2]
 
-			url = build_url({'mode': 'open_channel', 'foldername': '%s'%id, 'page':'1', 'playlist':'yes'})
+			url = build_url({'mode': 'open_channel', 'foldername': '%s'%id, 'page':'1', 'page_index': '1', 'playlist':'yes'})
 			li = xbmcgui.ListItem('%s'%name)
 			li.setArt({'icon':'%s'%thumb})
 			add_playlist_uri = build_url({'mode': 'add_playlist', 'id': '%s'%id, 'name': '%s'%name, 'thumb': '%s'%thumb})
@@ -315,7 +315,7 @@ def ytchannels_main():
 			xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li,isFolder=True)
 
 		if next_page!='1':
-			uri = build_url({'mode': 'open_playlists', 'id': '%s'%id, 'page' : '%s'%next_page ,'playlist':'yes'})
+			uri = build_url({'mode': 'open_playlists', 'id': '%s'%id, 'page' : '%s'%next_page, 'page_index': str(page_index+1), 'playlist':'yes'})
 
 			li = xbmcgui.ListItem('%s >>'%local_string(30005))
 			li.setArt({'icon':folder_img})
