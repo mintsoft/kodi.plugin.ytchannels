@@ -188,3 +188,7 @@ msgstr ""
 msgctxt "#30209"
 msgid "Filter out shorts"
 msgstr ""
+
+msgctxt "#30210"
+msgid "Back to channel list"
+msgstr ""
