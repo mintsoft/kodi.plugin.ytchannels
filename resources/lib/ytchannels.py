@@ -214,6 +214,11 @@ def ytchannels_main():
 
 		xbmcplugin.endOfDirectory(addon_handle)
 
+	elif mode[0]=='jump_prompt':
+		dicti=urllib.parse.parse_qs(sys.argv[2][1:])
+		pageNumber = xbmcgui.Dialog().numeric(type=0, heading='CHANGEME, What Page Number?', defaultt="")
+		xbmc.log("User endered the number " + pageNumber, level=xbmc.LOGINFO)
+
 	elif mode[0]=='open_channel':
 		dicti=urllib.parse.parse_qs(sys.argv[2][1:])
 		page=dicti['page'][0]
@@ -240,6 +245,10 @@ def ytchannels_main():
 		if page != "1":
 			li = xbmcgui.ListItem('[COLOR green]%(action)s[/COLOR] (%(onpage)s%(page)s)'%{ 'action': local_string(30210), 'onpage': local_string(30211), 'page': str(page_index)})
 			xbmcplugin.addDirectoryItem(handle=addon_handle, url=folder_uri, listitem=li, isFolder=True)
+		else:
+			jump_uri = build_url({'mode': 'jump_prompt', 'foldername': id, 'parent_folder': '%s'%dicti['parent_folder'][0]})
+			li = xbmcgui.ListItem('[COLOR green]%(action)s[/COLOR]'%{'action':'Jump to page'})
+			xbmcplugin.addDirectoryItem(handle=addon_handle, url=jump_uri, listitem=li, isFolder=True)
 
 		if not playlista and enable_playlists=='true':
 			url = build_url({'mode': 'open_playlists', 'id':'%s'%id, 'page':'1', 'page_index': '1'})
