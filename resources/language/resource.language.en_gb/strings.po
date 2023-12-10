@@ -196,3 +196,7 @@ msgstr ""
 msgctxt "#30211"
 msgid "page #"
 msgstr ""
+
+msgctxt "#30212"
+msgid "Jump to page"
+msgstr ""

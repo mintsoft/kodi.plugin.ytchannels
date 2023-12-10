@@ -50,7 +50,7 @@ def ytchannels_main():
 
 		YOUTUBE_API_KEY = my_addon.getSetting('youtube_api_key')
 
-	from .functions import build_url, delete_database, get_folders, add_folder, remove_folder, get_channels, get_channel_id_from_uploads_id, add_channel, remove_channel, search_channel, search_channel_by_username, get_latest_from_channel, get_playlists, add_sort_db, init_sort, move_up, move_down, check_sort_db, change_folder, set_folder_thumbnail, get_folder_thumbnail, check_thumb_db, add_thumb_db, get_livestreams, sort_folder_alphabetically, fix_duplicate_sorts
+	from .functions import build_url, delete_database, get_folders, add_folder, remove_folder, get_channels, get_channel_id_from_uploads_id, add_channel, remove_channel, search_channel, search_channel_by_username, get_latest_from_channel, get_playlists, get_page_token_for_page_index, add_sort_db, init_sort, move_up, move_down, check_sort_db, change_folder, set_folder_thumbnail, get_folder_thumbnail, check_thumb_db, add_thumb_db, get_livestreams, sort_folder_alphabetically, fix_duplicate_sorts
 
 	SORT_INIT = check_sort_db()
 	THUMB_INIT = check_thumb_db()
@@ -216,8 +216,14 @@ def ytchannels_main():
 
 	elif mode[0]=='jump_prompt':
 		dicti=urllib.parse.parse_qs(sys.argv[2][1:])
-		pageNumber = xbmcgui.Dialog().numeric(type=0, heading='CHANGEME, What Page Number?', defaultt="")
-		xbmc.log("User endered the number " + pageNumber, level=xbmc.LOGINFO)
+		channel_id=dicti['foldername'][0]
+
+		pageNumber = xbmcgui.Dialog().numeric(type=0, heading=local_string(30211), defaultt="")
+		
+		pageToken = get_page_token_for_page_index(channel_id, int(pageNumber))
+		new_url = build_url({'mode': 'open_channel', 'foldername': channel_id, 'parent_folder': '%s'%dicti['parent_folder'][0], 'page_index': pageNumber, 'page': pageToken })
+
+		xbmc.executebuiltin("RunPlugin(%(url)s)"%{'url': new_url})
 
 	elif mode[0]=='open_channel':
 		dicti=urllib.parse.parse_qs(sys.argv[2][1:])
@@ -246,8 +252,8 @@ def ytchannels_main():
 			li = xbmcgui.ListItem('[COLOR green]%(action)s[/COLOR] (%(onpage)s%(page)s)'%{ 'action': local_string(30210), 'onpage': local_string(30211), 'page': str(page_index)})
 			xbmcplugin.addDirectoryItem(handle=addon_handle, url=folder_uri, listitem=li, isFolder=True)
 		else:
+			li = xbmcgui.ListItem('[COLOR green]%(action)s[/COLOR]'%{ 'action': local_string(30212) } )
 			jump_uri = build_url({'mode': 'jump_prompt', 'foldername': id, 'parent_folder': '%s'%dicti['parent_folder'][0]})
-			li = xbmcgui.ListItem('[COLOR green]%(action)s[/COLOR]'%{'action':'Jump to page'})
 			xbmcplugin.addDirectoryItem(handle=addon_handle, url=jump_uri, listitem=li, isFolder=True)
 
 		if not playlista and enable_playlists=='true':
@@ -324,7 +330,7 @@ def ytchannels_main():
 			xbmcplugin.addDirectoryItem(handle=addon_handle, url=url, listitem=li,isFolder=True)
 
 		if next_page!='1':
-			uri = build_url({'mode': 'open_playlists', 'id': '%s'%id, 'page' : '%s'%next_page, 'page_index': str(page_index+1), 'playlist':'yes'})
+			uri = build_url({'mode': 'open_playlists', 'id': '%s'%id, 'page' : '%s'%next_page, 'page_index': (int(dicti['page_index'][0])+1), 'playlist':'yes'})
 
 			li = xbmcgui.ListItem('%s >>'%local_string(30005))
 			li.setArt({'icon':folder_img})
