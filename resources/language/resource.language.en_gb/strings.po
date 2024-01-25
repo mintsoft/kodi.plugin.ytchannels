@@ -188,15 +188,3 @@ msgstr ""
 msgctxt "#30209"
 msgid "Filter out shorts"
 msgstr ""
-
-msgctxt "#30210"
-msgid "Back to channel list"
-msgstr ""
-
-msgctxt "#30211"
-msgid "page #"
-msgstr ""
-
-msgctxt "#30212"
-msgid "Jump to page"
-msgstr ""

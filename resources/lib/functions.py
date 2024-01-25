@@ -406,9 +406,11 @@ def get_latest_from_channel(channel_id, page, filter_shorts):
     result_num = my_addon.getSetting('result_number')
 
     if page == '1':
-        req_url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&fields=items/snippet/resourceId/videoId,nextPageToken&maxResults=%s&playlistId=%s&key=' % ( str(result_num), channel_id) + YOUTUBE_API_KEY
+        req_url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&fields=items/snippet/resourceId/videoId,nextPageToken&maxResults=%s&playlistId=%s&key=' % (
+        str(result_num), channel_id) + YOUTUBE_API_KEY
     else:
-        req_url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&fields=items/snippet/resourceId/videoId,nextPageToken&pageToken=%s&maxResults=%s&playlistId=%s&key=' % ( page, str(result_num), channel_id) + YOUTUBE_API_KEY
+        req_url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&fields=items/snippet/resourceId/videoId,nextPageToken&pageToken=%s&maxResults=%s&playlistId=%s&key=' % (
+        page, str(result_num), channel_id) + YOUTUBE_API_KEY
     read = read_url(req_url)
     decoded_data = json.loads(read)
 
@@ -444,30 +446,6 @@ def get_latest_from_channel(channel_id, page, filter_shorts):
         listout.append([title, video_id, thumb, desc, seconds, date.group()])
     return listout
 
-def get_page_token_for_page_index(channel_id, page_index): 
-    my_addon = xbmcaddon.Addon()
-    result_num = my_addon.getSetting('result_number')
-    
-    req_url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&fields=items/snippet/resourceId/videoId,nextPageToken&maxResults=%s&playlistId=%s&key=' % ( str(result_num), channel_id) + YOUTUBE_API_KEY
-    read = read_url(req_url)
-    decoded_data = json.loads(read)
-    result_page_index = 1
-    try:
-        next_page_token = decoded_data['nextPageToken']
-    except:
-        return 1
-    
-    while 1+result_page_index < page_index:
-        req_url = 'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&fields=items/snippet/resourceId/videoId,nextPageToken&pageToken=%s&maxResults=%s&playlistId=%s&key=' % ( next_page_token, str(result_num), channel_id) + YOUTUBE_API_KEY
-        read = read_url(req_url)
-        decoded_data = json.loads(read)
-        result_page_index = result_page_index+1
-        try:
-            next_page_token = decoded_data['nextPageToken']
-        except:
-            pass
-    
-    return next_page_token
 
 class RedirectFilter(urllib.request.HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, hdrs, newurl):
