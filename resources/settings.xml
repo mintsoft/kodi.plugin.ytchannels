@@ -26,6 +26,9 @@
 				<setting id="minimum_duration_in_seconds" type="integer" label="30210">
 					<level>0</level>
 					<default>61</default>
+					<dependencies>
+						<dependency type="visible" setting="filter_shorts">true</dependency>
+					</dependencies>
 					<constraints>
 						<minimum>0</minimum>
 					</constraints>
