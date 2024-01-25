@@ -23,6 +23,7 @@ def ytchannels_main():
 	enable_playlists = my_addon.getSetting('enable_playlists')
 	enable_livestreams = my_addon.getSetting('enable_livestreams')
 	filter_shorts = my_addon.getSetting('filter_shorts')
+	minimum_duration_in_seconds = my_addon.getSetting('minimum_duration_in_seconds')
 
 	addon_handle = int(sys.argv[1])
 	args = urllib.parse.parse_qs(sys.argv[2][1:])
@@ -244,7 +245,7 @@ def ytchannels_main():
 			xbmcplugin.addDirectoryItem(handle=addon_handle, url=url,
 									listitem=li,isFolder=True)
 
-		video_list=get_latest_from_channel(id, page, filter_shorts == 'true')
+		video_list=get_latest_from_channel(id, page, filter_shorts == 'true', minimum_duration_in_seconds)
 		next_page=video_list[0]
 
 		xbmc_region = xbmc.getRegion('dateshort')
